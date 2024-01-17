@@ -336,10 +336,26 @@ call get_all_info_customer();
 SET SQL_SAFE_UPDATES = 0; -- disable safe update
 	-- dung not in
 update  khach_hang set `status` = 0 where  ma_khach_hang in(
-select kh.ma_khach_hang from khach_hang kh as ma_khach_hang join hop_dong hd on hd.ma_khach_hang =kh.ma_khach_hang 
+select ma_khach_hang from hop_dong hd
 where year(hd.ngay_lam_hop_dong) <2021
 );
 call get_all_info_customer();
+
+-- 19.	Cập nhật giá cho các dịch vụ đi kèm được sử dụng trên 10 lần trong năm 2020 lên gấp đôi.
+update dich_vu_di_kem set gia = gia*2 where ma_dich_vu_di_kem in ( select v.ma_dich_vu_di_kem from v_thong_tin_dich_vu_su_dung v where v.so_lan_dat >10);
+-- 20.	Hiển thị thông tin của tất cả các nhân viên và khách hàng có trong hệ thống, 
+-- thông tin hiển thị bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi.
+select ma_nhan_vien as id ,ho_ten, email, so_dien_thoai, ngay_sinh,dia_chi from nhan_vien
+union all
+select ma_khach_hang ,ho_ten, email, so_dien_thoai, ngay_sinh,dia_chi from khach_hang;
+
+--  SQL nang cao
+-- 21.	Tạo khung nhìn có tên là v_nhan_vien để lấy được thông tin của tất cả các nhân viên có địa chỉ là “Hải Châu” 
+-- và đã từng lập hợp đồng cho một hoặc nhiều khách hàng bất kì với ngày lập hợp đồng là “12/12/2019”.
+create view v_nhan_vien as
+select  * from nhan_vien nv where ma_nhan_vien in( select ma_nhan_vien from hop_dong where year(ngay_lam_hop_dong) =2021 and month(ngay_lam_hop_dong)=12 and day(ngay_lam_hop_dong) =12) and dia_chi like '%Đà Nẵng';
+-- 22.	Thông qua khung nhìn v_nhan_vien thực hiện cập nhật địa chỉ thành “Liên Chiểu” đối với tất cả các nhân viên được nhìn thấy bởi khung nhìn này.
+
 
 
 
