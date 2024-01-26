@@ -1,0 +1,18 @@
+.bg-color-switch-btn{
+    background-color:#E6E6E6;
+}
+.display-border-right{
+    border-right: 1px solid  #000;
+}
+.content-info{
+    position: absolute;
+    top: 200px;
+    left: 20px;
+}
+.margin-20px-20px{
+    margin: 20px 20px;
+}
+.strong-text{
+    font-weight: 500;
+    font-size: 40px;
+}
