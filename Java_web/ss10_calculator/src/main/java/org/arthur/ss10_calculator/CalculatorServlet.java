@@ -15,27 +15,25 @@ public class CalculatorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         float numA = Float.parseFloat(req.getParameter("first-operand"));
         float numB = Float.parseFloat(req.getParameter("second-operand"));
-        String mess = "";
-        float result = 0;
+        String result ="";
         String operator = req.getParameter("operator");
         switch (operator) {
             case "+":
-                result = numA + numB;
+                result = String.valueOf(numA + numB);
                 break;
             case "-":
-                result = numA - numB;
+                result = String.valueOf(numA - numB);
                 break;
             case "*":
-                result = numA * numB;
+                result = String.valueOf(numA * numB);
                 break;
             case "/":
-                if (numB == 0) {
-                    mess = "can not div to 0";
-                } else result = numA / numB;
+                if(numB==0){
+                    result = " Can not division to Zero";
+                } else  result = String.valueOf(numA / numB);
                 break;
         }
         req.setAttribute("result",result);
-        req.setAttribute("mess",mess);
         req.setAttribute("operator",operator);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/result.jsp");
         requestDispatcher.forward(req,resp);

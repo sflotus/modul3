@@ -21,28 +21,28 @@
                 </h2>
             </caption>
             <c:if test="${ product!= null}">
-                <input type="hidden" name="id" value="<c:out value='${product.id}' />"/>
+                <input type="hidden" name="id" value="${product.id}"/>
             </c:if>
             <tr>
-                <th>User Name:</th>
+                <th>Product Name:</th>
                 <td>
-                    <input type="text" name="name" size="45"
+                    <input type="text" name="name" size="45" id="inputName"
                            value="<c:out value='${product.name}' />"
                     />
                 </td>
             </tr>
             <tr>
-                <th>User Email:</th>
+                <th>Product price:</th>
                 <td>
-                    <input type="number" name="price" size="45"
+                    <input type="number" name="price" size="45" id="inputPrice"
                            value="<c:out value='${product.price}' />"
                     />
                 </td>
             </tr>
             <tr>
-                <th>Country:</th>
+                <th>Description:</th>
                 <td>
-                    <input type="text" name="description" size="15"
+                    <input type="text" name="description" size="15" id="inputDescription"
                            value="<c:out value='${product.description}' />"
                     />
                 </td>

@@ -46,9 +46,9 @@ public class ProductController extends HttpServlet {
     private void deleteProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     int id=Integer.parseInt(req.getParameter("id"));
     boolean isSuccess =productService.delete(id);
-    String mess ="successful";
+    String mess ="delete successful";
         if(!isSuccess){
-            mess = "unsuccessful";
+            mess = "delete unsuccessful";
         }
         try {
             resp.sendRedirect("/product?mess="+mess);
@@ -111,9 +111,9 @@ public class ProductController extends HttpServlet {
         String description = req.getParameter("description");
         Product product = new Product(id,name,price,description);
         boolean isSuccess=productService.updateProduct(product);
-        String mess="successful";
+        String mess="update successful";
         if(!isSuccess){
-            mess = "add new unsuccessful";
+            mess = "update unsuccessful";
         }
         try {
             resp.sendRedirect("/product?mess="+mess);
@@ -128,9 +128,9 @@ public class ProductController extends HttpServlet {
         String description = req.getParameter("description");
         Product product = new Product(name,price,description);
         boolean isSuccess=productService.add(product);
-        String mess="successful";
+        String mess="add new successful";
         if(!isSuccess){
-            mess = "unsuccessful";
+            mess = "add new unsuccessful";
         }
         try {
             resp.sendRedirect("/product?mess="+mess);
