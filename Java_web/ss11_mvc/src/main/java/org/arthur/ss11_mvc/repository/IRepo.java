@@ -11,4 +11,6 @@ public interface IRepo {
     boolean delete(int id);
     boolean update(Product product) throws SQLException;
     Product getProductByID(int id) throws SQLException;
+    List<Product> getProductByName(String inputName) throws SQLException;
+
 }

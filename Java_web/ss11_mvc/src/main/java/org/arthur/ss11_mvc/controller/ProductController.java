@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(value = "/product")
 public class ProductController extends HttpServlet {
@@ -34,9 +36,7 @@ public class ProductController extends HttpServlet {
                     throw new RuntimeException(e);
                 }
                 break;
-            case "delete":
-                deleteProduct(req, resp);
-                break;
+
             default:
                 // display list product
                 showList(req, resp);
@@ -44,7 +44,7 @@ public class ProductController extends HttpServlet {
     }
 
     private void deleteProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    int id=Integer.parseInt(req.getParameter("id"));
+    int id=Integer.parseInt(req.getParameter("deleteId"));
     boolean isSuccess =productService.delete(id);
     String mess ="delete successful";
         if(!isSuccess){
@@ -88,6 +88,9 @@ public class ProductController extends HttpServlet {
                 addNewProduct(req, resp);
                 // thêm mới
                 break;
+            case "delete":
+                deleteProduct(req, resp);
+                break;
             case "update":
                 try {
                     updateProduct(req, resp);
@@ -96,12 +99,32 @@ public class ProductController extends HttpServlet {
                 }
                 // update
                 break;
+            case "search":
+                try {
+                    searchProduct(req,resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
             default:
                 // hiển thị danh sách
                 showList(req, resp);
 
 
         }
+    }
+
+    private void searchProduct(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        String name = req.getParameter("valueSearch");
+        List<Product> productList ;
+        if(name.equals("")){
+            productList = productService.getAll();
+        } else  {
+            productList = productService.getProductByName(name);
+        }
+            req.setAttribute("productList",productList);
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/view/product/list.jsp");
+            requestDispatcher.forward(req,resp);
     }
 
     private void updateProduct(HttpServletRequest req, HttpServletResponse resp) throws SQLException {

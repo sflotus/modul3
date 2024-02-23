@@ -21,14 +21,23 @@
 <body>
 <center>
     <h1>Product Management</h1>
-    <h2>
-        <a href="/product?action=add">Add New Product</a>
-    </h2>
 </center>
+<div class="d-flex justify-content-between">
+    <div class="ms-5">
+        <button class="btn btn-primary" onclick="window.location.href='/product?action=add'">Add New</button>
+    </div>
+    <div class="me-5">
+        <form method="post" action="/product?action=search">
+            <input type="text" name="valueSearch">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+</div>
 <div align="center">
     <table border="1" cellpadding="5" class="table table-striped">
         <tr>
-            <th>ID</th>
+            <th>STT</th>
             <th>NAME</th>
             <th>PRICE</th>
             <th>DESCRIPTION</th>
@@ -36,13 +45,17 @@
         </tr>
         <c:forEach var="product" items="${productList}" varStatus="loop">
             <tr>
-                <td>${product.getId()}</td>
+                <td>${loop.count}</td>
                 <td>${product.getName()}</td>
                 <td>${product.getPrice()}</td>
                 <td>${product.getDescription()}</td>
                 <td>
-                    <a href="/product?action=update&id=${product.id}">Edit</a>
-                    <a href="/product?action=delete&id=${product.id}">Delete</a>
+
+                    <button class="btn btn-primary" onclick="window.location.href='/product?action=update&id=${product.id}'">Edit</button>
+                <%--                    <a href="/product?action=delete&id=${product.id}">Delete</a>--%>
+                    <button type="button" onclick="getInfoProduct(${product.getId()},'${product.getName()}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Delete
+                    </button>
                 </td>
             </tr>
         </c:forEach>
@@ -51,16 +64,37 @@
 <button type="button" class="btn btn-primary" id="liveToastBtn" style="display: none
 ">Show live toast</button>
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="liveToast" class="toast bg-info-subtle" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
-<%--            <img src="..." class="rounded me-2" alt="...">--%>
+<%--          <img src="..." class="rounded me-2" alt="...">--%>
             <strong class="me-auto">Notification</strong>
-            <small>now</small>
+            <small><span id="notificationTime">now</span></small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
             <span id="mess"><%=mess%></span>
         </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/product?action=delete" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Warning</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="deleteId" id="deleteIdProduct" hidden>
+                    <span>Delete </span><span id="deleteProductName"></span><span> ?</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <script>
@@ -72,6 +106,11 @@
        if(!(mess ==="")){
            toastBootstrap.show()
        }
+   }
+
+   function getInfoProduct(id,name){
+    document.getElementById("deleteProductName").innerText = name;
+    document.getElementById("deleteIdProduct").value=id;
    }
 </script>
 </body>

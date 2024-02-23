@@ -38,4 +38,9 @@ public class ProductService implements IService {
     public Product getProductByID(int id) throws SQLException {
         return productRepo.getProductByID(id);
     }
+
+    @Override
+    public List<Product> getProductByName(String inputName) throws SQLException {
+        return  productRepo.getProductByName(inputName);
+    }
 }
