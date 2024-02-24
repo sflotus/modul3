@@ -107,7 +107,7 @@ public class ProductRepo implements IRepo {
         List<Product> productList = new ArrayList<>();
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PRODUCT_BY_NAME);) {
-            preparedStatement.setString(1,inputName);
+            preparedStatement.setString(1,"%"+inputName+"%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
