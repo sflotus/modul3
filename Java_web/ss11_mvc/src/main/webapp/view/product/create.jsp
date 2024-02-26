@@ -31,6 +31,17 @@
                 </td>
             </tr>
             <tr>
+                <th>Country:</th>
+                <td>
+                    <select name="idCountry">
+                                <option>--Choose Country--</option>
+                        <c:forEach var="country" items="${countryList}">
+                            <option value="${country.id}">${country.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <th>Product description:</th>
                 <td>
                     <input type="text" name="description" id="description" size="45" required/>

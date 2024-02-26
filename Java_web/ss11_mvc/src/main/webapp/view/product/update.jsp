@@ -9,12 +9,12 @@
 <body>
 <center>
     <h1>Product Management</h1>
-        <h2>
-            Edit Product
-        </h2>
-<%--    <h2>--%>
-<%--        <a href="product?action=product">List All Product</a>--%>
-<%--    </h2>--%>
+    <h2>
+        Edit Product
+    </h2>
+    <%--    <h2>--%>
+    <%--        <a href="product?action=product">List All Product</a>--%>
+    <%--    </h2>--%>
 </center>
 <div align="center">
     <form method="post">
@@ -39,6 +39,22 @@
                 </td>
             </tr>
             <tr>
+                <th>Country:</th>
+                <td>
+                    <select name="idCountry">
+                        <c:forEach var="country" items="${countryList}">
+                            <c:if test="${product.getIdCountry() == country.getId()}">
+                                <option selected value="${country.id}">${country.getName()}</option>
+                            </c:if>
+                            <c:if test="${product.getIdCountry() != country.getId()}">
+                                <option value="${country.id}">${country.getName()}</option>
+                            </c:if>
+                        </c:forEach>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <th>Description:</th>
                 <td>
                     <input required type="text" name="description" size="15" id="inputDescription"
@@ -49,7 +65,8 @@
             <tr>
                 <td colspan="2" align="center">
                     <input class="btn btn-primary" type="submit" value="Save"/>
-                    <input class="btn btn-primary" type="button" value="Cancel" onclick="window.location.href='/product?action=product'" />
+                    <input class="btn btn-primary" type="button" value="Cancel"
+                           onclick="window.location.href='/product?action=product'"/>
                 </td>
             </tr>
         </table>

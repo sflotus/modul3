@@ -1,7 +1,10 @@
 package org.arthur.ss11_mvc.controller;
 
+import org.arthur.ss11_mvc.DTO.ProductDTO;
 import org.arthur.ss11_mvc.model.Product;
+import org.arthur.ss11_mvc.service.ICountryService;
 import org.arthur.ss11_mvc.service.IService;
+import org.arthur.ss11_mvc.service.impl.CountryService;
 import org.arthur.ss11_mvc.service.impl.ProductService;
 
 import javax.servlet.RequestDispatcher;
@@ -18,6 +21,7 @@ import java.util.List;
 @WebServlet(value = "/product")
 public class ProductController extends HttpServlet {
     IService productService = new ProductService();
+    ICountryService countryService = new CountryService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,29 +48,31 @@ public class ProductController extends HttpServlet {
     }
 
     private void deleteProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    int id=Integer.parseInt(req.getParameter("deleteId"));
-    boolean isSuccess =productService.delete(id);
-    String mess ="delete successful";
-        if(!isSuccess){
+        int id = Integer.parseInt(req.getParameter("deleteId"));
+        boolean isSuccess = productService.delete(id);
+        String mess = "delete successful";
+        if (!isSuccess) {
             mess = "delete unsuccessful";
         }
         try {
-            resp.sendRedirect("/product?mess="+mess);
-        }catch (IOException e){
+            resp.sendRedirect("/product?mess=" + mess);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     private void showUpdateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        int id= Integer.parseInt(req.getParameter("id"));
-        Product product =productService.getProductByID(id);
-        req.setAttribute("product",product);
+        int id = Integer.parseInt(req.getParameter("id"));
+        Product product = productService.getProductByID(id);
+        req.setAttribute("product", product);
+        req.setAttribute("countryList", countryService.getListCountry());
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/view/product/update.jsp");
         requestDispatcher.forward(req, resp);
     }
 
     private void showAddNewForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("countryList", countryService.getListCountry());
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/view/product/create.jsp");
         requestDispatcher.forward(req, resp);
     }
@@ -101,7 +107,7 @@ public class ProductController extends HttpServlet {
                 break;
             case "search":
                 try {
-                    searchProduct(req,resp);
+                    searchProduct(req, resp);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -116,15 +122,16 @@ public class ProductController extends HttpServlet {
 
     private void searchProduct(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         String name = req.getParameter("valueSearch");
-        List<Product> productList ;
-        if(name.equals("")){
+        List<ProductDTO> productList;
+        if (name.equals("")) {
             productList = productService.getAll();
-        } else  {
+        } else {
             productList = productService.getProductByName(name);
         }
-            req.setAttribute("productList",productList);
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/view/product/list.jsp");
-            requestDispatcher.forward(req,resp);
+        req.setAttribute("productList", productList);
+        req.setAttribute("valueChoose", name);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/view/product/list.jsp");
+        requestDispatcher.forward(req, resp);
     }
 
     private void updateProduct(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
@@ -132,15 +139,16 @@ public class ProductController extends HttpServlet {
         String name = req.getParameter("name");
         double price = Double.parseDouble(req.getParameter("price"));
         String description = req.getParameter("description");
-        Product product = new Product(id,name,price,description);
-        boolean isSuccess=productService.updateProduct(product);
-        String mess="update successful";
-        if(!isSuccess){
+        int idCountry = Integer.parseInt(req.getParameter("idCountry"));
+        Product product = new Product(id, name, price, description, idCountry);
+        boolean isSuccess = productService.updateProduct(product);
+        String mess = "update successful";
+        if (!isSuccess) {
             mess = "update unsuccessful";
         }
         try {
-            resp.sendRedirect("/product?mess="+mess);
-        }catch (IOException e){
+            resp.sendRedirect("/product?mess=" + mess);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -149,15 +157,16 @@ public class ProductController extends HttpServlet {
         String name = req.getParameter("name");
         double price = Double.parseDouble(req.getParameter("price"));
         String description = req.getParameter("description");
-        Product product = new Product(name,price,description);
-        boolean isSuccess=productService.add(product);
-        String mess="add new successful";
-        if(!isSuccess){
+        int idCountry = Integer.parseInt(req.getParameter("idCountry"));
+        Product product = new Product(name, price, description, idCountry);
+        boolean isSuccess = productService.add(product);
+        String mess = "add new successful";
+        if (!isSuccess) {
             mess = "add new unsuccessful";
         }
         try {
-            resp.sendRedirect("/product?mess="+mess);
-        }catch (IOException e){
+            resp.sendRedirect("/product?mess=" + mess);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

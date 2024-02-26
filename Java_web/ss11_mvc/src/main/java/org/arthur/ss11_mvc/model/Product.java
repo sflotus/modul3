@@ -5,24 +5,35 @@ public class Product {
     String name;
     double price;
     String description;
+    int idCountry;
 
     public Product() {
     }
 
-    public Product(int id, String name, double price, String description) {
+    public Product(int id, String name, double price, String description, int idCountry) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
+        this.idCountry = idCountry;
     }
-    public Product( String name, double price, String description) {
+    public Product( String name, double price, String description, int  idCountry) {
         this.name = name;
         this.price = price;
         this.description = description;
+        this.idCountry = idCountry;
     }
 
     public int getId() {
         return id;
+    }
+
+    public int getIdCountry() {
+        return idCountry;
+    }
+
+    public void setIdCountry(int id_country) {
+        this.idCountry = id_country;
     }
 
     public void setId(int id) {

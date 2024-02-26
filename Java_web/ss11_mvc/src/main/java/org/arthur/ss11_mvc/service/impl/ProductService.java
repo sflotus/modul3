@@ -1,5 +1,6 @@
 package org.arthur.ss11_mvc.service.impl;
 
+import org.arthur.ss11_mvc.DTO.ProductDTO;
 import org.arthur.ss11_mvc.model.Product;
 import org.arthur.ss11_mvc.repository.IRepo;
 import org.arthur.ss11_mvc.repository.impl.ProductRepo;
@@ -11,7 +12,7 @@ import java.util.List;
 public class ProductService implements IService {
     IRepo productRepo = new ProductRepo();
     @Override
-    public List<Product> getAll() {
+    public List<ProductDTO> getAll() {
         return productRepo.getAll();
     }
 
@@ -20,7 +21,7 @@ public class ProductService implements IService {
         try {
             return productRepo.add(product);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return  false;
         }
     }
 
@@ -40,7 +41,7 @@ public class ProductService implements IService {
     }
 
     @Override
-    public List<Product> getProductByName(String inputName) throws SQLException {
+    public List<ProductDTO> getProductByName(String inputName) throws SQLException {
         return  productRepo.getProductByName(inputName);
     }
 }

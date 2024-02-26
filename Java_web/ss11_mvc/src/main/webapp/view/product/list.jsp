@@ -28,7 +28,7 @@
     </div>
     <div class="me-5">
         <form method="post" action="/product?action=search">
-            <input type="text" name="valueSearch">
+            <input type="text" name="valueSearch" value="${valueChoose}">
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>
@@ -40,6 +40,7 @@
             <th>STT</th>
             <th>NAME</th>
             <th>PRICE</th>
+            <th>Country</th>
             <th>DESCRIPTION</th>
             <th>ACTION</th>
         </tr>
@@ -48,6 +49,7 @@
                 <td>${loop.count}</td>
                 <td>${product.getName()}</td>
                 <td>${product.getPrice()}</td>
+                <td>${product.getCountry()}</td>
                 <td>${product.getDescription()}</td>
                 <td>
 
